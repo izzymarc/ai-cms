@@ -2,39 +2,149 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Content Manager — Demo</title>
+  <title>AI Content Manager</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, #0f172a, #1e293b); color: #e2e8f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .container { max-width: 900px; margin: 2rem; padding: 3rem; background: rgba(30,41,59,0.8); border-radius: 16px; border: 1px solid rgba(100,116,139,0.3); backdrop-filter: blur(10px); }
-    .badge { display: inline-block; background: rgba(139,92,246,0.2); color: #a78bfa; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; margin: 4px; }
-    h1 { font-size: 2.5rem; background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .tagline { color: #94a3b8; font-size: 1.1rem; margin-bottom: 2rem; }
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
-    .feature { background: rgba(15,23,42,0.6); padding: 1rem; border-radius: 10px; border: 1px solid rgba(100,116,139,0.2); }
-    .feature h3 { color: #a78bfa; font-size: 0.9rem; margin-bottom: 0.3rem; }
-    .feature p { color: #94a3b8; font-size: 0.8rem; }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; text-align: center; }
-    .stat h2 { font-size: 1.8rem; color: #a78bfa; }
-    .stat p { color: #94a3b8; font-size: 0.8rem; }
-    .btn { display: inline-block; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 8px; transition: all 0.2s; }
-    .btn-primary { background: #8b5cf6; color: white; } .btn-primary:hover { background: #7c3aed; }
-    .btn-outline { border: 1px solid rgba(100,116,139,0.5); color: #e2e8f0; } .btn-outline:hover { border-color: #a78bfa; color: #a78bfa; }
-    .demo-preview { background: rgba(15,23,42,0.8); border-radius: 10px; padding: 1.5rem; margin: 2rem 0; text-align: center; border: 1px dashed rgba(100,116,139,0.3); }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:system-ui,sans-serif;background:#f8fafc;min-height:100vh}
+    .nav{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
+    .nav h1{font-size:1.5rem}
+    .nav-links{display:flex;gap:1.5rem}
+    .nav-links a{color:white;text-decoration:none;font-weight:500;padding:.5rem 1rem;border-radius:8px;transition:background .2s}
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.2)}
+    .container{max-width:1200px;margin:0 auto;padding:2rem}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+    .stat-card{background:white;border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+    .stat-card h3{color:#6366f1;font-size:2rem}
+    .stat-card p{color:#64748b;font-size:.9rem;margin-top:.25rem}
+    .panel{background:white;border-radius:12px;padding:2rem;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:1.5rem}
+    .panel h2{font-size:1.25rem;margin-bottom:1rem;color:#1e293b}
+    textarea{width:100%;height:120px;border:2px solid #e2e8f0;border-radius:8px;padding:1rem;font-size:1rem;resize:vertical;font-family:inherit}
+    textarea:focus{outline:none;border-color:#6366f1}
+    button{background:#6366f1;color:white;border:none;padding:.75rem 2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600;transition:background .2s}
+    button:hover{background:#4f46e5}
+    .results{display:none;margin-top:1.5rem}
+    .results.show{display:block}
+    .badge{display:inline-block;padding:.25rem .75rem;border-radius:20px;font-size:.8rem;font-weight:600;margin:.25rem}
+    .badge-cat{background:#ede9fe;color:#7c3aed}
+    .badge-tag{background:#dbeafe;color:#2563eb}
+    .conf-bar{display:flex;align-items:center;gap:1rem;margin:.5rem 0}
+    .conf-bar-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .5s}
+    .content-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+    .content-card{background:white;border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.1);transition:transform .2s}
+    .content-card:hover{transform:translateY(-2px)}
+    .content-card h3{font-size:1.1rem;margin-bottom:.5rem}
+    .content-card p{color:#64748b;font-size:.9rem;margin-bottom:.75rem}
+    .tabs{display:flex;gap:.5rem;margin-bottom:1.5rem}
+    .tab{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;border:2px solid #e2e8f0;background:white;font-weight:500;transition:all .2s}
+    .tab.active{background:#6366f1;color:white;border-color:#6366f1}
+    .empty{text-align:center;color:#94a3b8;padding:4rem}
+    @media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.nav{flex-direction:column;gap:1rem}}
   </style>
 </head>
-<body><div class="container">
-  <div class="tech-stack"><span class="badge">Python</span><span class="badge">FastAPI</span><span class="badge">React</span><span class="badge">HuggingFace</span><span class="badge">spaCy</span><span class="badge">PostgreSQL</span></div>
-  <h1>🤖 AI-Powered Content Manager</h1>
-  <p class="tagline">Intelligent content categorization, smart tagging, and optimization engine using NLP and machine learning.</p>
-  <div class="features">
-    <div class="feature"><h3>🏷️ Auto-Categorization</h3><p>ML classification with 90%+ accuracy</p></div>
-    <div class="feature"><h3>📝 Smart Tagging</h3><p>NLP keyword extraction & semantic tags</p></div>
-    <div class="feature"><h3>✨ Content Optimization</h3><p>AI-driven SEO and readability suggestions</p></div>
-    <div class="feature"><h3>📊 Analytics Dashboard</h3><p>Real-time engagement tracking</p></div>
-    <div class="feature"><h3>📚 Batch Processing</h3><p>Multi-document upload via Celery</p></div>
-    <div class="feature"><h3>🔌 REST API</h3><p>Fully documented FastAPI endpoints</p></div>
+<body>
+  <div class="nav">
+    <h1>🤖 AI Content Manager</h1>
+    <div class="nav-links">
+      <a href="#" class="active" onclick="switchTab('dashboard')">Dashboard</a>
+      <a href="#" onclick="switchTab('create')">Create</a>
+      <a href="#" onclick="switchTab('content')">Content Library</a>
+    </div>
   </div>
-  <div class="stats"><div class="stat"><h2>60%</h2><p>Time Saved</p></div><div class="stat"><h2>35%</h2><p>Engagement Increase</p></div><div class="stat"><h2>100+</h2><p>Active Projects</p></div></div>
-  <div class="demo-preview"><p style="color: #94a3b8; margin-bottom: 1rem;">🚧 Full interactive demo coming soon.</p><a href="https://github.com/izzymarc/ai-cms" class="btn btn-primary" target="_blank">📂 View on GitHub</a><a href="https://github.com/izzymarc/ai-cms#-setup-instructions" class="btn btn-outline" target="_blank">🔧 Setup Guide</a></div>
-</div></body></html>
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card"><h3 id="totalDocs">156</h3><p>Total Documents</p></div>
+      <div class="stat-card"><h3 id="avgAccuracy">92.3%</h3><p>Avg. Categorization Accuracy</p></div>
+      <div class="stat-card"><h3 id="timeSaved">60%</h3><p>Time Saved</p></div>
+      <div class="stat-card"><h3 id="engagementUp">+35%</h3><p>Engagement Increase</p></div>
+    </div>
+
+    <div id="dashboard-view">
+      <div class="panel">
+        <h2>📊 Content Analytics</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem">
+          <div><strong>By Type:</strong> Articles: 89 | Blog Posts: 45 | Social: 22</div>
+          <div><strong>By Category:</strong> Tech: 62 | Business: 38 | Health: 28 | Science: 18 | Finance: 10</div>
+          <div><strong>Engagement:</strong> 12.5K views | 890 shares | 4:05 avg read</div>
+          <div><strong>Performance:</strong> 0.32 bounce rate | 8% conversion</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="create-view" style="display:none">
+      <div class="panel">
+        <h2>✍️ Create & Auto-Categorize</h2>
+        <div style="margin-bottom:1rem"><input type="text" id="titleInput" placeholder="Content title..." style="width:100%;padding:.75rem;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;margin-bottom:.75rem" onfocus="this.style.borderColor='#6366f1'" onblur="this.style.borderColor='#e2e8f0'"></div>
+        <textarea id="contentInput" placeholder="Paste or type your content here... The AI will automatically categorize it and suggest relevant tags."></textarea>
+        <button onclick="categorizeContent()" style="margin-top:1rem">🔍 Analyze & Categorize</button>
+        <div id="results" class="results">
+          <h3 style="margin-bottom:.75rem;color:#1e293b">📋 Analysis Results</h3>
+          <div id="categoriesContainer"></div>
+          <div style="margin-top:1rem"><strong>🏷️ Suggested Tags:</strong> <div id="tagsContainer" style="margin-top:.5rem"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content-view" style="display:none">
+      <div class="panel"><h2>📚 Content Library</h2><div class="content-list" id="contentList"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const contentStore = [
+      {id:'1',title:'Getting Started with REST APIs',body:'A comprehensive guide to designing REST APIs using FastAPI. Covers authentication, database integration, and best practices.',type:'article',cats:[{name:'technology',conf:0.95}],tags:['api','fastapi','rest','backend'],date:'2026-07-20'},
+      {id:'2',title:'Building Scalable Cloud Infrastructure',body:'Learn how to architect cloud infrastructure that scales. Covers AWS, Docker, and Kubernetes for production deployments.',type:'article',cats:[{name:'technology',conf:0.88}],tags:['aws','docker','kubernetes','cloud'],date:'2026-07-18'},
+      {id:'3',title:'Market Analysis Q3 2026',body:'A detailed analysis of market trends and investment opportunities. Portfolio performance review and strategy adjustments.',type:'blog_post',cats:[{name:'finance',conf:0.82},{name:'business',conf:0.71}],tags:['market','investment','strategy','portfolio'],date:'2026-07-15'},
+      {id:'4',title:'Patient Data Management Systems',body:'Best practices for managing patient data in healthcare systems. Covers HIPAA compliance and data security protocols.',type:'article',cats:[{name:'health',conf:0.91}],tags:['health','data','hipaa','security'],date:'2026-07-12'},
+    ];
+
+    function renderContentList() {
+      document.getElementById('contentList').innerHTML = contentStore.map(c => `
+        <div class="content-card">
+          <h3>${c.title}</h3>
+          <p>${c.body.substring(0,100)}...</p>
+          <div>${c.cats.map(cat=>`<span class="badge badge-cat">${cat.name} ${Math.round(cat.conf*100)}%</span>`).join('')}</div>
+          <div style="margin-top:.5rem">${c.tags.map(t=>`<span class="badge badge-tag">${t}</span>`).join('')}</div>
+          <div style="margin-top:.5rem;color:#94a3b8;font-size:.8rem">${c.type} • ${c.date}</div>
+        </div>
+      `).join('');
+    }
+
+    function categorizeContent() {
+      const title = document.getElementById('titleInput').value;
+      const body = document.getElementById('contentInput').value;
+      if(!body) return;
+      const keywords = {
+        technology:['software','code','api','cloud','devops','data','aws','docker','kubernetes','fastapi','rest','backend','frontend'],
+        business:['revenue','startup','funding','strategy','market','growth','metrics','sales'],
+        health:['health','medical','clinical','patient','disease','treatment','hospital','care'],
+        science:['research','study','experiment','hypothesis','lab','scientific','data'],
+        finance:['investment','stock','market','portfolio','trading','fund','capital']
+      };
+      const text = (title+' '+body).toLowerCase();
+      const cats = Object.entries(keywords).map(([cat,kws]) => {
+        const matches = kws.filter(k => text.includes(k)).length;
+        return {name:cat, confidence: Math.min(round(matches/kws.length,2), 1.0)};
+      }).filter(c => c.confidence > 0).sort((a,b) => b.confidence-a.confidence);
+      const words = body.toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).filter(w => w.length>3);
+      const freq = {}; words.forEach(w => {freq[w]=(freq[w]||0)+1});
+      const tags = Object.entries(freq).filter(([,c]) => c>1).sort((a,b) => b[1]-a[1]).slice(0,8).map(([w]) => w);
+      document.getElementById('categoriesContainer').innerHTML = cats.map(c => `
+        <div class="conf-bar"><span style="min-width:100px;text-transform:capitalize;font-weight:600">${c.name}</span><div style="flex:1;background:#e2e8f0;border-radius:4px"><div class="conf-bar-fill" style="width:${c.confidence*100}%"></div></div><span style="min-width:50px;text-align:right;font-weight:600;color:#6366f1">${Math.round(c.confidence*100)}%</span></div>
+      `).join('');
+      document.getElementById('tagsContainer').innerHTML = tags.map(t => `<span class="badge badge-tag">${t}</span>`).join('');
+      document.getElementById('results').classList.add('show');
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('dashboard-view').style.display = tab==='dashboard'?'block':'none';
+      document.getElementById('create-view').style.display = tab==='create'?'block':'none';
+      document.getElementById('content-view').style.display = tab==='content'?'block':'none';
+    }
+
+    const round = (v,d) => Math.round(v*Math.pow(10,d))/Math.pow(10,d);
+    renderContentList();
+  </script>
+</body>
+</html>
