@@ -2,7 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Content Manager</title>
+  <title>AI Content Manager — Demo by Ezekiel Funom Gwamna</title>
+  <meta name="description" content="AI content management demo: automatic content categorization, tag suggestion with confidence scoring, a searchable content library, and engagement analytics.">
+  <meta name="author" content="Ezekiel Funom Gwamna">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Content Manager — Portfolio Demo">
+  <meta property="og:description" content="Content categorization, tag suggestion and analytics demo. Built by Ezekiel Funom Gwamna.">
+  <meta property="og:url" content="https://timely-mochi-688563.netlify.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Content Manager — Portfolio Demo">
+  <meta name="twitter:description" content="Content categorization, tag suggestion and analytics demo.">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:system-ui,sans-serif;background:#f8fafc;min-height:100vh}
@@ -38,10 +48,18 @@
     .tab{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;border:2px solid #e2e8f0;background:white;font-weight:500;transition:all .2s}
     .tab.active{background:#6366f1;color:white;border-color:#6366f1}
     .empty{text-align:center;color:#94a3b8;padding:4rem}
-    @media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.nav{flex-direction:column;gap:1rem}}
+    .demo-banner{background:linear-gradient(135deg,#4338ca,#6d28d9);color:#e0e7ff;padding:.6rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-size:.85rem;flex-wrap:wrap}
+    .demo-banner strong{color:#fff}
+    .demo-banner a{color:#fff;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,.4);padding:.3rem .9rem;border-radius:6px;white-space:nowrap;transition:background .2s}
+    .demo-banner a:hover{background:rgba(255,255,255,.15)}
+    @media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.nav{flex-direction:column;gap:1rem}.demo-banner{justify-content:center;text-align:center;padding:.6rem 1rem}}
   </style>
 </head>
 <body>
+  <div class="demo-banner">
+    <span><strong>Portfolio demo</strong> — sample dataset with a rule-based classifier running in-browser.</span>
+    <a href="https://ezekielgwamna.pages.dev/#/projects" target="_blank" rel="noopener">← Back to portfolio</a>
+  </div>
   <div class="nav">
     <h1>🤖 AI Content Manager</h1>
     <div class="nav-links">
@@ -52,10 +70,10 @@
   </div>
   <div class="container">
     <div class="stats">
-      <div class="stat-card"><h3 id="totalDocs">156</h3><p>Total Documents</p></div>
-      <div class="stat-card"><h3 id="avgAccuracy">92.3%</h3><p>Avg. Categorization Accuracy</p></div>
-      <div class="stat-card"><h3 id="timeSaved">60%</h3><p>Time Saved</p></div>
-      <div class="stat-card"><h3 id="engagementUp">+35%</h3><p>Engagement Increase</p></div>
+      <div class="stat-card"><h3 id="totalDocs">156</h3><p>Documents in sample set</p></div>
+      <div class="stat-card"><h3 id="avgAccuracy">92.3%</h3><p>Classifier confidence (sample)</p></div>
+      <div class="stat-card"><h3 id="timeSaved">60%</h3><p>Est. time saved vs. manual</p></div>
+      <div class="stat-card"><h3 id="engagementUp">+35%</h3><p>Engagement lift (sample)</p></div>
     </div>
 
     <div id="dashboard-view">
